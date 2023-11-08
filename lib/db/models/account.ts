@@ -3,6 +3,8 @@ import mongoose from "mongoose";
 const accountSchema = new mongoose.Schema({
   balance: Number,
   cardId: String,
+  createdAt: Date,
+  updatedAt: Date,
 });
 
 accountSchema.index({ cardId: 1 });

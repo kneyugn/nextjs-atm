@@ -1,9 +1,11 @@
+import { TransactionType } from "@/lib/utils/types";
 import mongoose from "mongoose";
 
 const transactionSchema = new mongoose.Schema({
   amount: Number,
   cardId: String,
-  date: Date,
+  createdAt: Date,
+  transactionType: String,
 });
 
 transactionSchema.index({ cardId: 1 });

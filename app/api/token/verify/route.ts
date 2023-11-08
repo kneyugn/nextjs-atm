@@ -5,7 +5,7 @@ import {
   createTokens,
   getSecretKey,
   saveAndRespondWithTokens,
-} from "@/lib/utils/data";
+} from "@/lib/utils/helper";
 
 connectDB();
 

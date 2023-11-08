@@ -1,7 +1,4 @@
-import {
-  createTokens,
-  getPinMatch,
-} from "@/lib/utils/data";
+import { createTokens, getPinMatch } from "@/lib/utils/helper";
 import connectDB from "@/lib/db/db";
 import RefreshToken from "@/lib/db/models/refreshToken";
 
@@ -10,7 +7,7 @@ connectDB();
 export async function POST(req: Request): Promise<Response> {
   const { pin } = await req.json();
 
-  const { accessToken, refreshToken } = createTokens()
+  const { accessToken, refreshToken } = createTokens();
 
   try {
     await new RefreshToken({ refreshToken, accessToken }).save();
