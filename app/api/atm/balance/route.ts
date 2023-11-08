@@ -1,5 +1,6 @@
 import connectDB from "@/lib/db/db";
 import Account from "@/lib/db/models/account";
+import { formatErrorMessage } from "@/lib/utils/helper";
 
 connectDB();
 
@@ -7,7 +8,7 @@ export async function GET(req: Request): Promise<Response> {
   const cardId = new URL(req.url).searchParams.get("cardId");
 
   if (!cardId) {
-    return new Response("card ID not provided", {
+    return new Response(formatErrorMessage("card ID not provided"), {
       status: 401,
     });
   }

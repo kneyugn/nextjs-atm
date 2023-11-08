@@ -1,25 +1,30 @@
 import connectDB from "@/lib/db/db";
-import InvalidToken from "@/lib/db/models/invalidToken";
+import RefreshToken from "@/lib/db/models/refreshToken";
+import { formatErrorMessage } from "@/lib/utils/helper";
+import { cookies } from "next/headers";
 
 connectDB();
 
-export async function POST(req: Request): Promise<Response> {
-  const { token } = await req.json();
+export async function POST(): Promise<Response> {
+  const cookiesStore = cookies();
+  const accessToken = cookiesStore.get("access_token")?.value;
+  const refreshToken = cookiesStore.get("refresh_token")?.value;
 
-  if (!token) {
-    return new Response("Token not provided", {
+  if (!accessToken) {
+    return new Response(formatErrorMessage("accessToken not found"), {
       status: 401,
     });
   }
 
   const options = { upsert: true, new: true, setDefaultsOnInsert: true };
-  const updateObject = { accessToken: token };
+  const filter = { $or: [{ accessToken }, { refreshToken }] };
+  const update = { valid: false };
 
-  const savedToken = await InvalidToken.findOneAndUpdate(
-    updateObject,
-    updateObject,
+  const savedToken = await RefreshToken.updateMany(
+    filter,
+    update,
     options
   ).exec();
 
-  return Response.json({ accessToken: savedToken.accessToken });
+  return Response.json({ accessToken: savedToken });
 }

@@ -1,6 +1,32 @@
+import { Header } from "@/components/header/header";
+import { PasswordField } from "@/components/password/passwordField";
 import Image from "next/image";
 
 export default function Home() {
+  return (
+    <>
+      <Header></Header>
+      <main>
+        <div className="card w-96 bg-base-100 shadow-xl">
+          <div className="card-body">
+            <Image
+              className="ml-.5"
+              height={190}
+              width={300}
+              src="/debit-card.jpg"
+              alt="shoes"
+            ></Image>
+          </div>
+          <PasswordField></PasswordField>
+        </div>
+      </main>
+
+      <ComponentRef />
+    </>
+  );
+}
+
+function ComponentRef() {
   const today = new Date();
   const formattedDate = today.toISOString().slice(0, 10);
 

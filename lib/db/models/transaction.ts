@@ -10,5 +10,5 @@ const transactionSchema = new mongoose.Schema({
 
 transactionSchema.index({ cardId: 1 });
 
-export default mongoose.models.transaction ||
+export default mongoose.models?.transaction ||
   mongoose.model("transaction", transactionSchema);

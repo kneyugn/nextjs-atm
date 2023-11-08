@@ -3,6 +3,14 @@ import RefreshToken from "@/lib/db/models/refreshToken";
 import { ATMError, TokenResponse } from "./types";
 import Account from "@/lib/db/models/account";
 
+export function getPort() {
+  return process.env.PORT || "3000";
+}
+
+export function getHost() {
+  return `http://localhost:${process.env.PORT}`;
+}
+
 export function getSecretKey(): string {
   return process.env.SECRET_KEY || "";
 }
@@ -12,8 +20,8 @@ export function getMongoURI(): string {
 }
 
 export function getDailyLimit(): number {
-  const LIMIT = 1000
-  return LIMIT
+  const LIMIT = 1000;
+  return LIMIT;
 }
 
 export function getPinMatch(): string {
@@ -22,7 +30,7 @@ export function getPinMatch(): string {
 }
 
 export function getExpiryShort(): string {
-  const accessTokenExpiry = "3m";
+  const accessTokenExpiry = "1s";
   return accessTokenExpiry;
 }
 
@@ -62,14 +70,16 @@ export function createToken(expiryTime: string) {
  * @returns
  */
 export async function saveAndRespondWithTokens(
-  refreshToken: string,
-  accessToken: string
+  accessToken: string,
+  refreshToken: string
 ): Promise<Response> {
   try {
-    await new RefreshToken({ refreshToken, accessToken }).save();
+    await new RefreshToken({ refreshToken, accessToken, valid: true }).save();
     return Response.json({ accessToken, refreshToken });
   } catch {
-    return new Response("Could not save token", { status: 500 });
+    return new Response(formatErrorMessage("Could not save token"), {
+      status: 500,
+    });
   }
 }
 
@@ -102,4 +112,8 @@ export function validateAmount(amount: number, balance: number) {
   if (amount > balance) {
     throw new ATMError("Amount exceeds balance", 401);
   }
+}
+
+export function formatErrorMessage(message: string): string {
+  return JSON.stringify({ message });
 }

@@ -9,5 +9,5 @@ const accountSchema = new mongoose.Schema({
 
 accountSchema.index({ cardId: 1 });
 
-export default mongoose.models.account ||
+export default mongoose.models?.account ||
   mongoose.model("account", accountSchema);

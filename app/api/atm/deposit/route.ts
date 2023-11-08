@@ -1,8 +1,13 @@
 import connectDB from "@/lib/db/db";
 import Account from "@/lib/db/models/account";
 import Transaction from "@/lib/db/models/transaction";
-import { getAccount, validateUserIput } from "@/lib/utils/helper";
+import {
+  formatErrorMessage,
+  getAccount,
+  validateUserIput,
+} from "@/lib/utils/helper";
 import { ATMError, TransactionType } from "@/lib/utils/types";
+import { format } from "path";
 
 export async function POST(req: Request): Promise<Response> {
   const { cardId, amount } = await req.json();
@@ -10,9 +15,14 @@ export async function POST(req: Request): Promise<Response> {
   const mongoose = await connectDB();
 
   if (!mongoose) {
-    return new Response(`Could not establish connection to MongoDB`, {
-      status: 500,
-    });
+    return new Response(
+      JSON.stringify(
+        formatErrorMessage(`Could not establish connection to MongoDB`)
+      ),
+      {
+        status: 500,
+      }
+    );
   }
 
   const session = await mongoose.startSession();
@@ -40,15 +50,18 @@ export async function POST(req: Request): Promise<Response> {
     return Response.json(updatedAccount);
   } catch (error) {
     if (error instanceof ATMError) {
-      return new Response(error.message, {
+      return new Response(formatErrorMessage(error.message), {
         status: error.statusCode,
       });
     }
 
     await session.abortTransaction();
     session.endSession();
-    return new Response(`Could not establish connection to MongoDB`, {
-      status: 500,
-    });
+    return new Response(
+      formatErrorMessage(`Could not establish connection to MongoDB`),
+      {
+        status: 500,
+      }
+    );
   }
 }

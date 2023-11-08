@@ -1,11 +1,13 @@
 import jwt, { TokenExpiredError } from "jsonwebtoken";
 import connectDB from "@/lib/db/db";
-import InvalidToken from "@/lib/db/models/invalidToken";
 import {
   createTokens,
+  formatErrorMessage,
   getSecretKey,
   saveAndRespondWithTokens,
 } from "@/lib/utils/helper";
+import { cookies } from "next/headers";
+import RefreshToken from "@/lib/db/models/refreshToken";
 
 connectDB();
 
@@ -18,10 +20,11 @@ connectDB();
  * @returns
  */
 export async function GET(req: Request): Promise<Response> {
-  const token = new URL(req.url).searchParams.get("token");
+  const cookiesStore = cookies();
+  const token = cookiesStore.get("access_token")?.value;
 
   if (!token) {
-    return new Response("Token not provided", {
+    return new Response(formatErrorMessage("Token not provided"), {
       status: 401,
     });
   }
@@ -31,8 +34,9 @@ export async function GET(req: Request): Promise<Response> {
   try {
     jwt.verify(token, secretKey);
 
-    const invalidToken = await InvalidToken.findOne({
+    const invalidToken = await RefreshToken.findOne({
       accessToken: token,
+      valid: false,
     }).exec();
 
     if (invalidToken) {
@@ -46,11 +50,13 @@ export async function GET(req: Request): Promise<Response> {
   } catch (error) {
     if (error instanceof TokenExpiredError) {
       // user is still logged in and doing transactions, issue a fresh token to the user
-      const { accessToken, refreshToken } = createTokens();
+      const { accessToken } = createTokens();
+      const cookieStore = cookies();
+      const refreshToken = cookieStore.get("refresh_token")?.value || "";
       return await saveAndRespondWithTokens(accessToken, refreshToken);
     }
 
-    return new Response("Token is no longer invalid", {
+    return new Response(formatErrorMessage("Token is no longer valid"), {
       status: 401,
     });
   }
