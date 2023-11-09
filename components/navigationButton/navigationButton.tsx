@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { Cookies } from "react-cookie";
 
 export function NavigationButton(props: {
   route: string;
@@ -10,7 +11,15 @@ export function NavigationButton(props: {
   const router = useRouter();
   return (
     <button
-      onClick={() => {
+      onClick={async () => {
+        if (props.route === "logout") {
+          await fetch("/api/token/invalidate", { method: "POST" });
+          const cookies = new Cookies();
+          cookies.remove("access_token");
+          cookies.remove("refresh_token");
+          router.push("/");
+          return;
+        }
         router.push(props.route);
         router.refresh();
       }}

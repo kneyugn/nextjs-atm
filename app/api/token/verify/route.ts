@@ -3,6 +3,7 @@ import connectDB from "@/lib/db/db";
 import {
   createTokens,
   formatErrorMessage,
+  getCardInfoFromJwt,
   getSecretKey,
   saveAndRespondWithTokens,
 } from "@/lib/utils/helper";
@@ -19,7 +20,7 @@ connectDB();
  * @param req
  * @returns
  */
-export async function GET(req: Request): Promise<Response> {
+export async function GET(): Promise<Response> {
   const cookiesStore = cookies();
   const token = cookiesStore.get("access_token")?.value;
 
@@ -36,10 +37,9 @@ export async function GET(req: Request): Promise<Response> {
 
     const invalidToken = await RefreshToken.findOne({
       accessToken: token,
-      valid: false,
     }).exec();
 
-    if (invalidToken) {
+    if (!invalidToken.valid) {
       throw new Error(
         "User has logged out of system. Token can no longer be used."
       );
@@ -50,7 +50,8 @@ export async function GET(req: Request): Promise<Response> {
   } catch (error) {
     if (error instanceof TokenExpiredError) {
       // user is still logged in and doing transactions, issue a fresh token to the user
-      const { accessToken } = createTokens();
+      const card = getCardInfoFromJwt(token);
+      const { accessToken } = createTokens(card.cardId);
       const cookieStore = cookies();
       const refreshToken = cookieStore.get("refresh_token")?.value || "";
       return await saveAndRespondWithTokens(accessToken, refreshToken);

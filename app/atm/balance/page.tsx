@@ -1,5 +1,5 @@
 import { Header } from "@/components/header/header";
-import { NavigationButton } from "@/components/navigationButton/page";
+import { NavigationButton } from "@/components/navigationButton/navigationButton";
 import { getCardInfoFromJwt, getHost } from "@/lib/utils/helper";
 import { cookies } from "next/headers";
 
@@ -28,11 +28,6 @@ export default async function AccountDeposit() {
             <p>Account balance: ${account?.balance}</p>
             <p>Account Created: {dateCreated}</p>
             <div className="card-actions justify-end">
-              {/* <NavigationButton
-                route="/sign-out"
-                text="Sign out"
-                secondary={true}
-              ></NavigationButton> */}
               <NavigationButton route="/atm" text="Go Home"></NavigationButton>
             </div>
           </div>

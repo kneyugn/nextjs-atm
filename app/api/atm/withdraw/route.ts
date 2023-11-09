@@ -76,7 +76,10 @@ async function validateTransactionLimit(cardId: string, amountAsked: number) {
   const amountTaken = result?.[0]?.totalAmount ?? 0;
   const limitReached = amountTaken + amountAsked > dailyLimit;
   if (result.length > 0 && limitReached) {
-    throw new ATMError("Daily transaction limit reached", 401);
+    throw new ATMError(
+      `You cannot withdraw more than $${getDailyLimit()} per day`,
+      401
+    );
   }
 }
 

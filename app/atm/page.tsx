@@ -1,5 +1,5 @@
 import { Header } from "@/components/header/header";
-import { NavigationButton } from "@/components/navigationButton/page";
+import { NavigationButton } from "@/components/navigationButton/navigationButton";
 import { getDailyLimit } from "@/lib/utils/helper";
 
 export default function ATMMenu() {
@@ -46,6 +46,18 @@ export default function ATMMenu() {
                 <NavigationButton
                   route="atm/withdraw"
                   text="Withdraw"
+                ></NavigationButton>
+              </div>
+            </div>
+          </div>
+          <div className="card w-96 bg-base-100 shadow-xl">
+            <div className="card-body">
+              <h3 className="card-title">Log out</h3>
+              <p>Log out of account.</p>
+              <div className="card-actions justify-end">
+                <NavigationButton
+                  route="logout"
+                  text="Log Out"
                 ></NavigationButton>
               </div>
             </div>

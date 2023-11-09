@@ -1,5 +1,5 @@
 import { Header } from "@/components/header/header";
-import { NavigationButton } from "@/components/navigationButton/page";
+import { NavigationButton } from "@/components/navigationButton/navigationButton";
 import { getHost } from "@/lib/utils/helper";
 
 async function getTransaction(transactionId: string) {
@@ -31,11 +31,6 @@ export default async function TransactionReceipt({
             <p>Account balance: ${transactionDetails.balance}</p>
             <p>Transaction type: {transactionDetails.transactionType}</p>
             <p>Date of transaction: {transactionDetails.createdAt}</p>
-            {/* <NavigationButton
-            route="/sign-out"
-            text="Sign out"
-            secondary={true}
-          ></NavigationButton> */}
             <NavigationButton route="/atm" text="Go Home"></NavigationButton>
           </div>
         </div>

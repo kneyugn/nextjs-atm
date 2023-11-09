@@ -1,5 +1,5 @@
 import { Header } from "@/components/header/header";
-import { NavigationButton } from "@/components/navigationButton/page";
+import { NavigationButton } from "@/components/navigationButton/navigationButton";
 
 export default async function TransactionErrorPage({
   params,

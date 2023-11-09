@@ -55,7 +55,7 @@ export function PasswordField() {
         </div>
         <button
           type="submit"
-          className="mx-8 my-2 btn btn-primary self-stretch"
+          className="mx-8 mt-2 mb-8 btn btn-primary self-stretch"
         >
           Sign in
         </button>

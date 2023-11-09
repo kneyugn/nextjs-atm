@@ -1,14 +1,12 @@
 # Nextjs - ATM 
 
 
+## Preview and System Design
 
 https://github.com/kneyugn/nextjs-learn/assets/21285877/757f3501-9139-4501-8e2e-d01845ff55b5
 
 
 <img width="1075" alt="Screenshot 2023-11-09 at 9 57 25 AM" src="https://github.com/kneyugn/nextjs-learn/assets/21285877/2cc6bd1b-6e0c-4f02-a947-cd50cab6df02">
-
-
-## Preview and System Design
 
 
 ## How to run
