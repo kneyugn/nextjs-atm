@@ -13,3 +13,5 @@ export enum TransactionType {
   Deposit = "deposit",
   Withdraw = "withdraw",
 }
+
+export type Card = { cardId: string; name: string };

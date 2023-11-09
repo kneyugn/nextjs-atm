@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
-import { getHost, getPort } from "./lib/utils/helper";
+import { getHost } from "./lib/utils/helper";
 
-// This function can be marked `async` if using `await` inside
+//[TODO]: speicifc middleware for multiple routs
+// for /, it should route to /atm if user is already logged in
 export async function middleware(request: NextRequest) {
-  console.log(request.url);
   const access_token = request.cookies.get("access_token")?.value;
   const refresh_token = request.cookies.get("refresh_token")?.value;
   const verifyEndpoint = `${getHost()}/api/token/verify`;
@@ -28,13 +28,8 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     */
     "/atm",
+    "/atm/balance",
+    "/atm/deposit",
   ],
 };

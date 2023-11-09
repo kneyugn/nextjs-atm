@@ -1,7 +1,8 @@
 import jwt from "jsonwebtoken";
 import RefreshToken from "@/lib/db/models/refreshToken";
-import { ATMError, TokenResponse } from "./types";
+import { ATMError, Card, TokenResponse } from "./types";
 import Account from "@/lib/db/models/account";
+import { v4 as uuidv4 } from "uuid";
 
 export function getPort() {
   return process.env.PORT || "3000";
@@ -30,7 +31,7 @@ export function getPinMatch(): string {
 }
 
 export function getExpiryShort(): string {
-  const accessTokenExpiry = "1s";
+  const accessTokenExpiry = "3m";
   return accessTokenExpiry;
 }
 
@@ -52,7 +53,7 @@ export function createTokens(): TokenResponse {
 export function createToken(expiryTime: string) {
   return jwt.sign(
     {
-      cardId: "555-555",
+      cardId: createCreditCardId(),
       name: "Jane",
     },
     getSecretKey(),
@@ -60,6 +61,14 @@ export function createToken(expiryTime: string) {
       expiresIn: expiryTime,
     }
   );
+}
+
+export function createCreditCardId() {
+  return uuidv4();
+}
+
+export function getCardInfoFromJwt(token: string): Card {
+  return jwt.verify(token, getSecretKey());
 }
 
 /**

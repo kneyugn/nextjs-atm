@@ -5,9 +5,9 @@ import Image from "next/image";
 export default function Home() {
   return (
     <>
-      <Header></Header>
+      <Header secondaryHeader="Login Menu"></Header>
       <main>
-        <div className="card w-96 bg-base-100 shadow-xl">
+        <div className="card m-8 flex align-center w-96 bg-base-100 shadow-xl">
           <div className="card-body">
             <Image
               className="ml-.5"
