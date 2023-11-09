@@ -1,41 +1,66 @@
 "use client";
 
+import { ATMError, TransactionType } from "@/lib/utils/types";
 import { useRouter } from "next/navigation";
 
-async function makeTransaction(cardId: string, amount: number) {
-  const res = await fetch(`/api/atm/deposit`, {
+async function makeTransaction(
+  cardId: string,
+  amount: number,
+  transactionType: TransactionType
+) {
+  const url =
+    transactionType === TransactionType.Withdraw
+      ? "/api/atm/withdraw"
+      : "/api/atm/deposit";
+  const res = await fetch(url, {
     method: "POST",
     body: JSON.stringify({
       cardId: cardId,
       amount: amount,
     }),
   });
-  return await res.json();
+  const transactionData = await res.json();
+  if (!res.ok) {
+    throw new ATMError(transactionData.message, res.status);
+  }
+  return transactionData;
 }
 
 export function StaticTransaction(props: {
   amount: string;
   text: string;
   cardId: string;
+  transactionType: TransactionType;
 }) {
   const router = useRouter();
   return (
-    <button
-      onClick={async () => {
-        const { transactionId } = await makeTransaction(
-          props.cardId,
-          parseInt(props.amount)
-        );
-        router.push(`/atm/transaction/${transactionId}`);
-      }}
-      className="btn btn-primary"
-    >
-      {props.text}
-    </button>
+    <div>
+      <button
+        onClick={async () => {
+          try {
+            const { transactionId } = await makeTransaction(
+              props.cardId,
+              parseInt(props.amount),
+              props.transactionType
+            );
+            router.push(`/atm/transaction/${transactionId}`);
+          } catch (err: any) {
+            router.push(`/atm/error/${err.message}`);
+          }
+        }}
+        className="btn btn-primary"
+      >
+        {props.text}
+      </button>
+    </div>
   );
 }
 
-export function DynamicTransaction(props: { text: string; cardId: string }) {
+export function DynamicTransaction(props: {
+  text: string;
+  cardId: string;
+  transactionType: TransactionType;
+}) {
   const router = useRouter();
   return (
     <>
@@ -44,12 +69,16 @@ export function DynamicTransaction(props: { text: string; cardId: string }) {
         onSubmit={async (e) => {
           e.preventDefault();
           const amount = e.currentTarget.customAmount?.value;
-          await makeTransaction(props.cardId, parseInt(amount));
-          const { transactionId } = await makeTransaction(
-            props.cardId,
-            parseInt(amount)
-          );
-          router.push(`/atm/transaction/${transactionId}`);
+          try {
+            const { transactionId } = await makeTransaction(
+              props.cardId,
+              parseInt(amount),
+              props.transactionType
+            );
+            router.push(`/atm/transaction/${transactionId}`);
+          } catch (err: any) {
+            router.push(`/atm/error/${err.message}`);
+          }
         }}
       >
         <div className="">
@@ -61,7 +90,7 @@ export function DynamicTransaction(props: { text: string; cardId: string }) {
             id="customTransaction"
             type="number"
             min={10}
-            max={100}
+            max={2000}
             className="input input-bordered w-full"
           />
         </div>

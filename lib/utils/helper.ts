@@ -30,13 +30,14 @@ export function getPinMatch(): string {
   return PIN_MATCH;
 }
 
+// TODO: expiring time should be very short
 export function getExpiryShort(): string {
-  const accessTokenExpiry = "3m";
+  const accessTokenExpiry = "1s";
   return accessTokenExpiry;
 }
 
 export function getExpiryLong(): string {
-  const accessTokenExpiry = "10m";
+  const accessTokenExpiry = "50m";
   return accessTokenExpiry;
 }
 
@@ -82,7 +83,7 @@ export async function createAccount(cardId: string) {
 }
 
 export function getCardInfoFromJwt(token: string): Card {
-  return jwt.verify(token, getSecretKey()) as Card;
+  return jwt.decode(token, getSecretKey()) as Card;
 }
 
 /**

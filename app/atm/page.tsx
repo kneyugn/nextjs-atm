@@ -6,7 +6,7 @@ export default function ATMMenu() {
   return (
     <>
       <Header secondaryHeader={"Main Menu"}></Header>
-      <main className="m-8">
+      <main className="m-8 flex justify-center">
         <div className="flex gap-4">
           <div className="card w-96 bg-base-100 shadow-xl">
             <div className="card-body">

@@ -8,7 +8,6 @@ import {
   validateUserIput,
 } from "@/lib/utils/helper";
 import { ATMError, TransactionType } from "@/lib/utils/types";
-import { format } from "path";
 
 export async function POST(req: Request): Promise<Response> {
   const { cardId, amount } = await req.json();

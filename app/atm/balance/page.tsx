@@ -8,7 +8,9 @@ async function fetchAccount() {
   const accessToken = cookiesStore.get("access_token")?.value || "";
   const card = getCardInfoFromJwt(accessToken);
   const cardId = card?.cardId || "";
-  const res = await fetch(`${getHost()}/api/atm/balance?cardId=${cardId}`);
+  const res = await fetch(`${getHost()}/api/atm/balance?cardId=${cardId}`, {
+    cache: "no-store",
+  });
   return res.json();
 }
 
@@ -18,19 +20,19 @@ export default async function AccountDeposit() {
   return (
     <>
       <Header secondaryHeader="Account Balance"></Header>
-      <main className="flex m-8">
+      <main className="m-8 flex justify-center">
         <div className="card w-96 bg-base-100 shadow-xl">
           <div className="card-body">
             <h2 className="card-title">Account Balance</h2>
             <p>CardId: {account?.cardId}</p>
-            <p>Account balance: {account?.balance}</p>
+            <p>Account balance: ${account?.balance}</p>
             <p>Account Created: {dateCreated}</p>
             <div className="card-actions justify-end">
-              <NavigationButton
+              {/* <NavigationButton
                 route="/sign-out"
                 text="Sign out"
                 secondary={true}
-              ></NavigationButton>
+              ></NavigationButton> */}
               <NavigationButton route="/atm" text="Go Home"></NavigationButton>
             </div>
           </div>

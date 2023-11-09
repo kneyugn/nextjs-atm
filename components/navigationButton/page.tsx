@@ -12,6 +12,7 @@ export function NavigationButton(props: {
     <button
       onClick={() => {
         router.push(props.route);
+        router.refresh();
       }}
       className={props.secondary ? "btn btn-default" : "btn btn-primary"}
     >

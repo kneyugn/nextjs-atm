@@ -18,27 +18,28 @@ export default async function TransactionReceipt({
 }: {
   params: { id: string };
 }) {
-  console.log(params.id);
-
   const transactionDetails = await getTransaction(params.id);
 
   return (
     <>
       <Header secondaryHeader="Deposit Receipt"></Header>
-      <div className="card w-96 bg-base-100 shadow-xl">
-        <div className="card-body">
-          <h2 className="card-title">Deposit completed!</h2>
-          <p>Amount deposited: {transactionDetails.amount}</p>
-          <p>Account balance: {transactionDetails.balance}</p>
-          <p>Date of transaction: {transactionDetails.createdAt}</p>
-          <NavigationButton
+      <main className="m-8 flex justify-center">
+        <div className="card w-96 bg-base-100 shadow-xl">
+          <div className="card-body">
+            <h2 className="card-title">Transaction completed!</h2>
+            <p>Transaction Amount: ${transactionDetails.amount}</p>
+            <p>Account balance: ${transactionDetails.balance}</p>
+            <p>Transaction type: {transactionDetails.transactionType}</p>
+            <p>Date of transaction: {transactionDetails.createdAt}</p>
+            {/* <NavigationButton
             route="/sign-out"
             text="Sign out"
             secondary={true}
-          ></NavigationButton>
-          <NavigationButton route="/atm" text="Go Home"></NavigationButton>
+          ></NavigationButton> */}
+            <NavigationButton route="/atm" text="Go Home"></NavigationButton>
+          </div>
         </div>
-      </div>
+      </main>
     </>
   );
 }

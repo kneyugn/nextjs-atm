@@ -33,5 +33,6 @@ export async function GET(req: Request): Promise<Response> {
     cardId: transaction.cardId,
     balance: account.balance,
     createdAt: transaction.createdAt,
+    transactionType: transaction.transactionType,
   });
 }
