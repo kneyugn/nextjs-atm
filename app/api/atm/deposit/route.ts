@@ -2,6 +2,7 @@ import connectDB from "@/lib/db/db";
 import Account from "@/lib/db/models/account";
 import Transaction from "@/lib/db/models/transaction";
 import {
+  createTransactionId,
   formatErrorMessage,
   getAccount,
   validateUserIput,
@@ -38,16 +39,17 @@ export async function POST(req: Request): Promise<Response> {
       { cardId: cardId },
       { balance: newBalance, updatedAt: currentTime }
     );
-    await new Transaction({
+    const transactionCreated = await new Transaction({
       amount: parseInt(amount),
       cardId: cardId,
       createdAt: currentTime,
       transactionType: TransactionType.Deposit,
+      transactionId: createTransactionId(),
     }).save();
     await session.commitTransaction();
     session.endSession();
     const updatedAccount = await Account.findOne({ cardId: cardId });
-    return Response.json(updatedAccount);
+    return Response.json(transactionCreated);
   } catch (error) {
     if (error instanceof ATMError) {
       return new Response(formatErrorMessage(error.message), {

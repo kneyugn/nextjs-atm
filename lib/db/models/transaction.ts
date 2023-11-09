@@ -6,6 +6,7 @@ const transactionSchema = new mongoose.Schema({
   cardId: String,
   createdAt: Date,
   transactionType: String,
+  transactionId: String,
 });
 
 transactionSchema.index({ cardId: 1 });

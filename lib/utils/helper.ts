@@ -40,20 +40,20 @@ export function getExpiryLong(): string {
   return accessTokenExpiry;
 }
 
-export function createTokens(): TokenResponse {
+export function createTokens(cardId: string): TokenResponse {
   const accessTokenExpiry = getExpiryShort();
-  const accessToken = createToken(accessTokenExpiry);
+  const accessToken = createToken(accessTokenExpiry, cardId);
 
   const refreshTokenExpiry = getExpiryLong();
-  const refreshToken = createToken(refreshTokenExpiry);
+  const refreshToken = createToken(refreshTokenExpiry, cardId);
 
   return { accessToken, refreshToken };
 }
 
-export function createToken(expiryTime: string) {
+export function createToken(expiryTime: string, cardId: string) {
   return jwt.sign(
     {
-      cardId: createCreditCardId(),
+      cardId: cardId,
       name: "Jane",
     },
     getSecretKey(),
@@ -63,12 +63,26 @@ export function createToken(expiryTime: string) {
   );
 }
 
-export function createCreditCardId() {
+export function createcardId() {
   return uuidv4();
 }
 
+export function createTransactionId() {
+  return uuidv4();
+}
+
+export async function createAccount(cardId: string) {
+  const currentTime = new Date();
+  await new Account({
+    cardId: cardId,
+    balance: 0,
+    updatedAt: currentTime,
+    createdAt: currentTime,
+  }).save();
+}
+
 export function getCardInfoFromJwt(token: string): Card {
-  return jwt.verify(token, getSecretKey());
+  return jwt.verify(token, getSecretKey()) as Card;
 }
 
 /**

@@ -1,10 +1,13 @@
 import {
+  createAccount,
   createTokens,
+  createcardId,
   formatErrorMessage,
   getPinMatch,
 } from "@/lib/utils/helper";
 import connectDB from "@/lib/db/db";
 import RefreshToken from "@/lib/db/models/refreshToken";
+
 import { cookies } from "next/headers";
 
 connectDB();
@@ -12,13 +15,15 @@ connectDB();
 export async function POST(req: Request): Promise<Response> {
   const { pin } = await req.json();
 
-  const { accessToken, refreshToken } = createTokens();
+  const newCardId = createcardId();
+  const { accessToken, refreshToken } = createTokens(newCardId);
 
   try {
+    await createAccount(newCardId); // for data seeding
     await new RefreshToken({ refreshToken, accessToken, valid: true }).save();
   } catch {
     return new Response(
-      JSON.stringify(formatErrorMessage("Could not create tokens")),
+      JSON.stringify(formatErrorMessage("Could not create account / tokens")),
       {
         status: 500,
       }

@@ -9,8 +9,7 @@ async function fetchAccount() {
   const card = getCardInfoFromJwt(accessToken);
   const cardId = card?.cardId || "";
   const res = await fetch(`${getHost()}/api/atm/balance?cardId=${cardId}`);
-  const account = res.json();
-  return account;
+  return res.json();
 }
 
 export default async function AccountDeposit() {
