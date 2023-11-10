@@ -1,69 +1,56 @@
+import { Card } from "@/components/card/card";
 import { Header } from "@/components/header/header";
+import { Main } from "@/components/main/main";
 import { NavigationButton } from "@/components/navigationButton/navigationButton";
-import { getDailyLimit } from "@/lib/utils/helper";
 
 export default function ATMMenu() {
+  const menuItems = [
+    {
+      title: "Check balance",
+      description: "Check your account balance",
+      buttonText: "Check Balance",
+      route: "atm/balance",
+    },
+    {
+      title: "Make a deposit",
+      description: "",
+      buttonText: "Deposit",
+      route: "atm/deposit",
+    },
+    {
+      title: "Withdraw from account",
+      description: "Your money when you need it. You can withdraw up to $1000",
+      buttonText: "Withdraw",
+      route: "atm/withdraw",
+    },
+    {
+      title: "Log out.",
+      description: "Log out of the account. Don't forget to take your card.",
+      buttonText: "Log Out",
+      route: "logout",
+    },
+  ];
   return (
     <>
       <Header secondaryHeader={"Main Menu"}></Header>
-      <main className="m-8 flex justify-center">
-        <div className="flex gap-4">
-          <div className="card w-96 bg-base-100 shadow-xl">
-            <div className="card-body">
-              <h3 className="card-title">Check Balance</h3>
-              <p>Check your account balance.</p>
-              <div className="card-actions justify-end">
-                <NavigationButton
-                  route="atm/balance"
-                  text="View Balance"
-                ></NavigationButton>
-              </div>
-            </div>
-          </div>
-          <div className="card w-96 bg-base-100 shadow-xl">
-            <div className="card-body">
-              <h3 className="card-title">Make a deposit.</h3>
-              <p>
-                Making a deposit is quick and easy. Just select the amount or
-                add a custom amount.
-              </p>{" "}
-              <div className="card-actions justify-end">
-                <NavigationButton
-                  route="atm/deposit"
-                  text="Deposit"
-                ></NavigationButton>
-              </div>
-            </div>
-          </div>
-          <div className="card w-96 bg-base-100 shadow-xl">
-            <div className="card-body">
-              <h3 className="card-title">Withdraw from account.</h3>
-              <p>
-                Your money when you need it. You can withdraw up to $
-                {getDailyLimit()}
-              </p>
-              <div className="card-actions justify-end">
-                <NavigationButton
-                  route="atm/withdraw"
-                  text="Withdraw"
-                ></NavigationButton>
-              </div>
-            </div>
-          </div>
-          <div className="card w-96 bg-base-100 shadow-xl">
-            <div className="card-body">
-              <h3 className="card-title">Log out</h3>
-              <p>Log out of account.</p>
-              <div className="card-actions justify-end">
-                <NavigationButton
-                  route="logout"
-                  text="Log Out"
-                ></NavigationButton>
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
+      <Main>
+        {menuItems.map((item) => {
+          return (
+            <>
+              <Card>
+                <h3 className="card-title">{item.title}</h3>
+                <p>{item.description}</p>
+                <div className="card-actions justify-end">
+                  <NavigationButton
+                    route={item.route}
+                    text={item.buttonText}
+                  ></NavigationButton>
+                </div>
+              </Card>
+            </>
+          );
+        })}
+      </Main>
     </>
   );
 }

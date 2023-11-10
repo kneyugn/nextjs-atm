@@ -1,4 +1,6 @@
+import { Card } from "@/components/card/card";
 import { Header } from "@/components/header/header";
+import { Main } from "@/components/main/main";
 import {
   DynamicTransaction,
   StaticTransaction,
@@ -17,64 +19,65 @@ function fetchAccount() {
 
 export default async function AccountDeposit() {
   let cardId = fetchAccount();
+  const transactionMenu = [
+    {
+      title: "Deposit $20",
+      amount: 20,
+      buttonText: "Deposit $20",
+    },
+    {
+      title: "Deposit $50",
+      amount: 50,
+      buttonText: "Deposit $50",
+    },
+    {
+      title: "Deposit $100",
+      amount: 100,
+      buttonText: "Deposit $100",
+    },
+    {
+      title: "Deposit Custom amount",
+      customAmount: true,
+      buttonText: "Deposit",
+    },
+  ];
   return (
     <>
       <Header secondaryHeader={"Deposit"}></Header>
-      <main className="m-8 flex justify-center">
-        <div className="flex gap-4">
-          <div className="card w-96 bg-base-100 shadow-xl">
-            <div className="card-body justify-between">
-              <h3 className="card-title">Deposit $10</h3>
-              <div className="card-actions justify-end">
-                <StaticTransaction
-                  transactionType={TransactionType.Deposit}
-                  amount="10"
-                  text="Deposit $10"
-                  cardId={cardId}
-                ></StaticTransaction>
-              </div>
-            </div>
-          </div>
-          <div className="card w-96 bg-base-100 shadow-xl">
-            <div className="card-body justify-between">
-              <h3 className="card-title">Deposit $20</h3>
-              <div className="card-actions justify-end">
-                <StaticTransaction
-                  transactionType={TransactionType.Deposit}
-                  amount="20"
-                  text="Deposit $20"
-                  cardId={cardId}
-                ></StaticTransaction>
-              </div>
-            </div>
-          </div>
-          <div className="card w-96 bg-base-100 shadow-xl">
-            <div className="card-body justify-between">
-              <h3 className="card-title">Deposit $50</h3>
-              <div className="card-actions justify-end">
-                <StaticTransaction
-                  transactionType={TransactionType.Deposit}
-                  amount="50"
-                  text="Deposit $50"
-                  cardId={cardId}
-                ></StaticTransaction>
-              </div>
-            </div>
-          </div>
-          <div className="card w-96 bg-base-100 shadow-xl">
-            <div className="card-body justify-between">
-              <h3 className="card-title">Deposit Custom amount</h3>
-              <div className="card-actions justify-end">
-                <DynamicTransaction
-                  transactionType={TransactionType.Deposit}
-                  text="Deposit"
-                  cardId={cardId}
-                ></DynamicTransaction>
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
+      <Main>
+        {transactionMenu.map((item) => {
+          return (
+            <>
+              <Card>
+                {item.amount && !item.customAmount ? (
+                  <>
+                    <h3 className="card-title">{item.title}</h3>
+                    <div className="card-actions justify-end">
+                      <StaticTransaction
+                        transactionType={TransactionType.Deposit}
+                        amount={item.amount}
+                        text={item.buttonText}
+                        cardId={cardId}
+                      ></StaticTransaction>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <h3 className="card-title">{item.title}</h3>
+                    <div className="card-actions justify-end">
+                      <DynamicTransaction
+                        transactionType={TransactionType.Deposit}
+                        text={item.buttonText}
+                        cardId={cardId}
+                      ></DynamicTransaction>
+                    </div>
+                  </>
+                )}
+              </Card>
+            </>
+          );
+        })}
+      </Main>
     </>
   );
 }

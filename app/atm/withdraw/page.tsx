@@ -1,4 +1,6 @@
+import { Card } from "@/components/card/card";
 import { Header } from "@/components/header/header";
+import { Main } from "@/components/main/main";
 import {
   DynamicTransaction,
   StaticTransaction,
@@ -15,71 +17,67 @@ function fetchAccount() {
   return cardId;
 }
 
-// TODO: this component could be combined with deposit
 export default async function AccountWithdraw() {
   let cardId = fetchAccount();
+  const transactionMenu = [
+    {
+      title: "Withdraw $20",
+      amount: 20,
+      buttonText: "Withdraw $20",
+    },
+    {
+      title: "Withdraw $50",
+      amount: 50,
+      buttonText: "Withdraw $50",
+    },
+    {
+      title: "Withdraw $100",
+      amount: 100,
+      buttonText: "Withdraw $100",
+    },
+    {
+      title: "Withdraw Custom amount",
+      customAmount: true,
+      buttonText: "Withdraw",
+    },
+  ];
   return (
     <>
       <Header secondaryHeader={"Withdraw"}></Header>
-      <main className="m-8 flex justify-center">
-        <div className="flex gap-4">
-          <div className="card w-96 bg-base-100 shadow-xl">
-            <div className="card-body justify-between">
-              <h3 className="card-title">Withdraw $10</h3>
-              <div className="card-actions justify-end">
-                <StaticTransaction
-                  transactionType={TransactionType.Withdraw}
-                  amount="10"
-                  text="Withdraw $10"
-                  cardId={cardId}
-                ></StaticTransaction>
-              </div>
-            </div>
-          </div>
-          <div className="card w-96 bg-base-100 shadow-xl">
-            <div className="card-body justify-between">
-              <h3 className="card-title">Withdraw $20</h3>
-              <div className="card-actions justify-end">
-                <StaticTransaction
-                  transactionType={TransactionType.Withdraw}
-                  amount="20"
-                  text="Withdraw $20"
-                  cardId={cardId}
-                ></StaticTransaction>
-              </div>
-            </div>
-          </div>
-          <div className="card w-96 bg-base-100 shadow-xl">
-            <div className="card-body justify-between">
-              <h3 className="card-title">Withdraw $50</h3>
-              <div className="card-actions justify-end">
-                <StaticTransaction
-                  transactionType={TransactionType.Withdraw}
-                  amount="50"
-                  text="Withdraw $50"
-                  cardId={cardId}
-                ></StaticTransaction>
-              </div>
-            </div>
-          </div>
-          <div className="card w-96 bg-base-100 shadow-xl">
-            <div className="card-body justify-between">
-              <h3 className="card-title">Withdraw Custom amount</h3>
-              <p>
-                To test that user cannot exceed daily limit, make withdraws of
-                more than $1000
-              </p>
-              <div className="card-actions justify-end">
-                <DynamicTransaction
-                  transactionType={TransactionType.Withdraw}
-                  text="Withdraw"
-                  cardId={cardId}
-                ></DynamicTransaction>
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
+      <Main>
+        {transactionMenu.map((item) => {
+          return (
+            <>
+              <Card>
+                {item.amount && !item.customAmount ? (
+                  <>
+                    <h3 className="card-title">{item.title}</h3>
+                    <div className="card-actions justify-end">
+                      <StaticTransaction
+                        transactionType={TransactionType.Withdraw}
+                        amount={item.amount}
+                        text={item.buttonText}
+                        cardId={cardId}
+                      ></StaticTransaction>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <h3 className="card-title">{item.title}</h3>
+                    <div className="card-actions justify-end">
+                      <DynamicTransaction
+                        transactionType={TransactionType.Withdraw}
+                        text={item.buttonText}
+                        cardId={cardId}
+                      ></DynamicTransaction>
+                    </div>
+                  </>
+                )}
+              </Card>
+            </>
+          );
+        })}
+      </Main>
     </>
   );
 }
