@@ -27,7 +27,7 @@ async function makeTransaction(
 }
 
 export function StaticTransaction(props: {
-  amount: string;
+  amount: number;
   text: string;
   cardId: string;
   transactionType: TransactionType;
@@ -40,7 +40,7 @@ export function StaticTransaction(props: {
           try {
             const { transactionId } = await makeTransaction(
               props.cardId,
-              parseInt(props.amount),
+              props.amount,
               props.transactionType
             );
             router.push(`/atm/transaction/${transactionId}`);
