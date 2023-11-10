@@ -3,3 +3,10 @@ export async function register() {
     await import("./instrumentation.node.ts");
   }
 }
+
+
+// import { registerOTel } from "@vercel/otel";
+
+// export function register() {
+//   registerOTel("next-app");
+// }

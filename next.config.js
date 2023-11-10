@@ -1,7 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  instrumentationHook: true,
   generateEtags: false,
+  experimental: {
+    instrumentationHook: true,
+  },
 };
 
 module.exports = nextConfig;
