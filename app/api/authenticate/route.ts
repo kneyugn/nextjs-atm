@@ -21,6 +21,7 @@ export async function POST(req: Request): Promise<Response> {
   try {
     await createAccount(newCardId); // for data seeding
     await new RefreshToken({ refreshToken, accessToken, valid: true }).save();
+    
   } catch {
     return new Response(
       JSON.stringify(formatErrorMessage("Could not create account / tokens")),

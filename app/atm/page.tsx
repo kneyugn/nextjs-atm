@@ -34,10 +34,10 @@ export default function ATMMenu() {
     <>
       <Header secondaryHeader={"Main Menu"}></Header>
       <Main>
-        {menuItems.map((item) => {
+        {menuItems.map((item, idx) => {
           return (
             <>
-              <Card>
+              <Card key={idx}>
                 <h3 className="card-title">{item.title}</h3>
                 <p>{item.description}</p>
                 <div className="card-actions justify-end">

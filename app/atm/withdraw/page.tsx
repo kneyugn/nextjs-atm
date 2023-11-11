@@ -45,10 +45,10 @@ export default async function AccountWithdraw() {
     <>
       <Header secondaryHeader={"Withdraw"}></Header>
       <Main>
-        {transactionMenu.map((item) => {
+        {transactionMenu.map((item, idx) => {
           return (
             <>
-              <Card>
+              <Card key={idx}>
                 {item.amount && !item.customAmount ? (
                   <>
                     <h3 className="card-title">{item.title}</h3>

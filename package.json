@@ -3,11 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p $PORT",
+    "dev": "PORT=$PORT next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "debug": "npm run dev -- PORT=3000"
+    "lint": "next lint"
   },
   "dependencies": {
     "@opentelemetry/api": "^1.4.1",
