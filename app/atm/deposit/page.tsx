@@ -6,13 +6,17 @@ import {
   StaticTransaction,
 } from "@/components/transactionInput/transactionInput";
 import { getCardInfoFromJwt } from "@/lib/utils/helper";
-import { TransactionType } from "@/lib/utils/types";
+import { ATMError, TransactionType } from "@/lib/utils/types";
 import { cookies } from "next/headers";
 
 function fetchAccount() {
   const cookiesStore = cookies();
   const accessToken = cookiesStore.get("access_token")?.value || "";
+  
   const card = getCardInfoFromJwt(accessToken);
+   if (card === null || typeof card === "string") {
+     throw new ATMError("Card not found", 404);
+   }
   const cardId = card?.cardId || "";
   return cardId;
 }

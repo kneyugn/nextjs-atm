@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import RefreshToken from "@/lib/db/models/refreshToken";
 import { ATMError, Card, TokenResponse } from "./types";
 import Account from "@/lib/db/models/account";
@@ -82,8 +82,8 @@ export async function createAccount(cardId: string) {
   }).save();
 }
 
-export function getCardInfoFromJwt(token: string): Card {
-  return jwt.decode(token, getSecretKey()) as Card;
+export function getCardInfoFromJwt(token: string): JwtPayload | null | string {
+  return jwt.decode(token);
 }
 
 /**

@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export function Main(props: { children?: ReactNode }): ReactNode {
   return (
     <main className="m-8 flex justify-center">

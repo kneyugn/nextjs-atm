@@ -4,7 +4,7 @@ export class ATMError extends Error {
   statusCode: number;
   constructor(message: string, status: number) {
     super(message);
-    this.name = "MyCustomError";
+    this.name = "ATM_Error";
     this.statusCode = status;
   }
 }

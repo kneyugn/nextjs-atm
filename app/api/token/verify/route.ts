@@ -51,7 +51,14 @@ export async function GET(): Promise<Response> {
     if (error instanceof TokenExpiredError) {
       // user is still logged in and doing transactions, issue a fresh token to the user
       const card = getCardInfoFromJwt(token);
-      const { accessToken } = createTokens(card.cardId);
+
+      if (card === null || typeof card === "string") {
+        return new Response(formatErrorMessage("Could not decode from token"), {
+          status: 404,
+        });
+      }
+
+      const { accessToken } = createTokens(card?.cardId);
       const cookieStore = cookies();
       const refreshToken = cookieStore.get("refresh_token")?.value || "";
       return await saveAndRespondWithTokens(accessToken, refreshToken);
