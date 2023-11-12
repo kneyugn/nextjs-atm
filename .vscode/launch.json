@@ -5,16 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "node",
+            "name": "Launch via NPM",
             "request": "launch",
-            "name": "Launch Program",
+            "runtimeArgs": [
+                "run",
+                "dev"
+            ],
+            "runtimeExecutable": "npm",
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${file}",
-            "outFiles": [
-                "${workspaceFolder}/**/*.js"
-            ]
+            "type": "node"
         }
+       
     ]
 }

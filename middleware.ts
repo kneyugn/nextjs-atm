@@ -3,7 +3,7 @@ import { NextRequest } from "next/server";
 import { getHost } from "./lib/utils/helper";
 
 //[TODO]: specific middleware for multiple routes
-// [TODO]: back button does not trigger middleware: 
+// [TODO]: back button does not trigger middleware:
 // for /, it should route to /atm if user is already logged in
 export async function middleware(request: NextRequest) {
   const access_token = request.cookies.get("access_token")?.value;
