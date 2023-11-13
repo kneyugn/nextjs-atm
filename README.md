@@ -16,6 +16,7 @@ https://github.com/kneyugn/nextjs-atm/assets/21285877/8d755129-faf0-4a03-b6b9-1a
 SECRET_KEY="hebATM"
 MONGODB_URI="mongodb://localhost:27017/atm"
 PORT=3000
+NEXT_RUNTIME=nodejs
 ```
 
 run `docker-compose up -d` then run `npm run dev`.
