@@ -85,3 +85,5 @@ export default async function AccountDeposit() {
     </>
   );
 }
+
+// TODO: applying more reusable UI components

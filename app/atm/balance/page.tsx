@@ -1,19 +1,27 @@
 import { Header } from "@/components/header/header";
 import { NavigationButton } from "@/components/navigationButton/navigationButton";
-import { formatErrorMessage, getCardInfoFromJwt, getHost } from "@/lib/utils/helper";
+import {
+  formatErrorMessage,
+  getCardInfoFromJwt,
+  getHost,
+} from "@/lib/utils/helper";
 import { ATMError } from "@/lib/utils/types";
 import { cookies } from "next/headers";
 
 async function fetchAccount() {
   const cookiesStore = cookies();
-  const accessToken = cookiesStore.get("access_token")?.value || "";
-  const card = getCardInfoFromJwt(accessToken);
+  const access_token = cookiesStore.get("access_token")?.value || "";
+  const refresh_token = cookiesStore.get("refresh_token")?.value || "";
+  const card = getCardInfoFromJwt(access_token);
   if (card === null || typeof card === "string") {
-    throw new ATMError('Card not found', 404)
+    throw new ATMError("Card not found", 404);
   }
   const cardId = card?.cardId || "";
   const res = await fetch(`${getHost()}/api/atm/balance?cardId=${cardId}`, {
-    cache: "no-store",
+    headers: {
+      cache: "no-store",
+      Cookie: `access_token=${access_token};refresh_token=${refresh_token}`,
+    },
   });
   return res.json();
 }

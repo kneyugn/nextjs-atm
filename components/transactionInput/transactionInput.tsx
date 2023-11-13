@@ -2,12 +2,16 @@
 
 import { ATMError, TransactionType } from "@/lib/utils/types";
 import { useRouter } from "next/navigation";
+import { Cookies } from "react-cookie";
 
 async function makeTransaction(
   cardId: string,
   amount: number,
   transactionType: TransactionType
 ) {
+  const cookies = new Cookies();
+  const access_token = cookies.get("access_token");
+  const refresh_token = cookies.get("refresh_token");
   const url =
     transactionType === TransactionType.Withdraw
       ? "/api/atm/withdraw"
@@ -18,6 +22,9 @@ async function makeTransaction(
       cardId: cardId,
       amount: amount,
     }),
+    headers: {
+      Cookie: `access_token=${access_token};refresh_token=${refresh_token}`,
+    },
   });
   const transactionData = await res.json();
   if (!res.ok) {

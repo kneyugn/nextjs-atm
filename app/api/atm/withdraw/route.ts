@@ -11,7 +11,7 @@ import {
 } from "@/lib/utils/helper";
 import { ATMError, TransactionType } from "@/lib/utils/types";
 
-// TODO: this component could be combined with deposit
+// TODO: could extract more to share logic between deposit and withdraw
 export async function POST(req: Request): Promise<Response> {
   const { cardId, amount } = await req.json();
 
@@ -86,7 +86,7 @@ async function validateTransactionLimit(cardId: string, amountAsked: number) {
 async function getTransactionByTime(date: Date, cardId: string) {
   date.setHours(date.getHours() - 24);
 
-  return await Transaction.aggregate([
+  return Transaction.aggregate([
     {
       $match: {
         transactionType: TransactionType.Withdraw,

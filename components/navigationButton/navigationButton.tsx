@@ -12,9 +12,17 @@ export function NavigationButton(props: {
   return (
     <button
       onClick={async () => {
+        const cookies = new Cookies();
+        const access_token = cookies.get('access_token')
+        const refresh_token = cookies.get("refresh_token");
         if (props.route === "logout") {
-          await fetch("/api/token/invalidate", { method: "POST" });
-          const cookies = new Cookies();
+          await fetch("/api/token/invalidate", {
+            method: "POST",
+            headers: {
+              cache: "no-store",
+              Cookie: `access_token=${access_token};refresh_token=${refresh_token}`,
+            },
+          });
           cookies.remove("access_token");
           cookies.remove("refresh_token");
           router.push("/");

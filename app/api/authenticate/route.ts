@@ -32,6 +32,7 @@ export async function POST(req: Request): Promise<Response> {
   }
 
   if (pin === getPinMatch()) {
+    // TODO: use jwe or iron-session for stateless encrypted cookies
     const cookieStore = cookies();
     cookieStore.set("access_token", accessToken);
     cookieStore.set("refresh_token", refreshToken);

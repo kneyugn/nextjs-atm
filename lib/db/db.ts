@@ -1,3 +1,4 @@
+// TODO: nextjs won't build, consider having mongo logic in another microservice
 import mongoose from "mongoose";
 import { getMongoURI } from "../utils/helper";
 

@@ -6,7 +6,6 @@ connectDB();
 
 export async function GET(req: Request): Promise<Response> {
   const cardId = new URL(req.url).searchParams.get("cardId");
-
   if (!cardId) {
     return new Response(formatErrorMessage("card ID not provided"), {
       status: 401,

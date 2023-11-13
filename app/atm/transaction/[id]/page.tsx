@@ -1,11 +1,21 @@
 import { Header } from "@/components/header/header";
 import { NavigationButton } from "@/components/navigationButton/navigationButton";
 import { getHost } from "@/lib/utils/helper";
+import { cookies } from "next/headers";
 
 async function getTransaction(transactionId: string) {
   try {
+    const cookiesStore = cookies();
+    const access_token = cookiesStore.get("access_token")?.value || "";
+    const refresh_token = cookiesStore.get("refresh_token")?.value || "";
     const res = await fetch(
-      `${getHost()}/api/atm/transaction?transactionId=${transactionId}`
+      `${getHost()}/api/atm/transaction?transactionId=${transactionId}`,
+      {
+        headers: {
+          cache: "no-store",
+          Cookie: `access_token=${access_token};refresh_token=${refresh_token}`,
+        },
+      }
     );
     return res.json();
   } catch (err) {
